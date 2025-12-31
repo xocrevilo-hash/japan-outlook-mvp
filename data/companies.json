@@ -1,0 +1,293 @@
+[
+  {
+    "ticker": "4755",
+    "slug": "4755-rakuten-group",
+    "name_en": "Rakuten Group",
+    "name_ja": "楽天グループ",
+    "segment": "Prime",
+    "sector": "Internet / Telecom",
+    "tags": [
+      "E-commerce",
+      "Telecom",
+      "FinTech"
+    ],
+    "outlook": {
+      "version": "v5",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-30",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Turnaround momentum is strengthening",
+          "body": "Group-level fundamentals are clearly improving, driven primarily by sustained Mobile loss reduction alongside continued FinTech profitability, materially increasing confidence in a durable earnings inflection over the next 6–12 months.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Mobile execution remains the dominant value driver",
+          "body": "Progress toward Mobile EBITDA profitability is constructive, but the investment case still hinges on sustained subscriber growth rather than pricing actions; continued net add momentum is essential to fully validate the turnaround.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "FinTech provides structural earnings support",
+          "body": "Credit card, payments, and banking operations continue to generate stable profits and cash flow, offering meaningful downside protection while Mobile remains in transition.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Balance-sheet risk is actively managed but still constraining",
+          "body": "Recent hybrid/perpetual financing actions improve near-term flexibility and refinancing visibility; however, leverage and funding costs remain important constraints until Mobile profitability is firmly established.",
+          "footnotes": [
+            1,
+            4
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "A slowdown in Mobile subscriber growth, higher-than-expected refinancing costs, or renewed competitive pressure in telecom would materially weaken the 6–12 month investment case and delay re-rating.",
+          "footnotes": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, 決算短信, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Industry / regulatory context",
+        "4": "Financing / capital-structure announcements"
+      }
+    }
+  },
+  {
+    "ticker": "6976",
+    "slug": "6976-taiyo-yuden",
+    "name_en": "Taiyo Yuden",
+    "name_ja": "太陽誘電",
+    "segment": "Prime",
+    "sector": "Electronic Components",
+    "tags": [
+      "MLCC",
+      "Automotive/Industrial",
+      "Components"
+    ],
+    "outlook": {
+      "version": "v1",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-30",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Earnings pressure reflects cyclical end-market weakness",
+          "body": "Demand softness across automotive and industrial electronics continues to weigh on volumes and margins, keeping near-term earnings under pressure despite cost controls.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Inventory adjustment remains the key swing factor",
+          "body": "Customer destocking appears to be progressing, but visibility on the timing and strength of a volume recovery remains limited, making earnings normalization highly sensitive to inventory trends.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Technology positioning remains intact",
+          "body": "The company retains strong positions in high-capacitance MLCCs and advanced components, supporting competitiveness once demand conditions stabilize.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital discipline limits downside",
+          "body": "Balance-sheet strength and controlled capex reduce financial risk during the downturn, allowing the business to absorb cyclical weakness without structural impairment.",
+          "footnotes": [
+            1,
+            4
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Prolonged end-market weakness, delayed inventory normalization, or pricing pressure from competitors could extend the earnings downturn beyond the next 6–12 months.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, 決算短信, IR materials)",
+        "2": "Earnings presentation / management commentary",
+        "3": "Industry / competitive context",
+        "4": "Balance-sheet disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "4676",
+    "slug": "4676-fuji-media-holdings",
+    "name_en": "Fuji Media Holdings",
+    "name_ja": "フジ・メディア・ホールディングス",
+    "segment": "Prime",
+    "sector": "Media",
+    "tags": [
+      "Media",
+      "Governance",
+      "Asset value"
+    ],
+    "outlook": {
+      "version": "v1",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-30",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Strategic uncertainty is increasing due to event-driven pressure",
+          "body": "Heightened scrutiny of governance and asset efficiency has raised the likelihood of structural change, increasing uncertainty around capital allocation and strategic direction.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Core broadcasting business remains structurally challenged",
+          "body": "Advertising trends and audience fragmentation continue to pressure earnings in the core media segment, limiting organic growth potential.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Asset value underpins optionality",
+          "body": "Real estate and strategic shareholdings represent latent value that could be unlocked under shareholder or activist pressure.",
+          "footnotes": [
+            1,
+            4
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Management response will shape near-term outcomes",
+          "body": "The degree to which management engages with calls for reform or portfolio action will materially influence the 6–12 month investment narrative.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Resistance to change, weak execution of asset monetization, or deterioration in advertising markets could negate event-driven upside and reinforce structural decline concerns.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, 決算短信, IR materials)",
+        "2": "Earnings presentations / management commentary",
+        "3": "Industry context (advertising / media)",
+        "4": "Asset-related disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "6963",
+    "slug": "6963-rohm",
+    "name_en": "Rohm",
+    "name_ja": "ローム",
+    "segment": "Prime",
+    "sector": "Semiconductors",
+    "tags": [
+      "Semiconductors",
+      "Power devices",
+      "Automotive"
+    ],
+    "outlook": {
+      "version": "v1",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-30",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Structural earnings pressure is intensifying",
+          "body": "Profitability remains under pressure amid weak demand in power semiconductors and elevated cost structures, reinforcing concerns about structural rather than purely cyclical issues.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Automotive exposure is no longer a sufficient offset",
+          "body": "Slower-than-expected EV demand and pricing pressure limit the ability to rely on automotive semiconductors as a near-term growth engine.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Investment burden constrains flexibility",
+          "body": "Ongoing capex and R&D commitments weigh on free cash flow, reducing near-term flexibility despite the strategic importance of these investments.",
+          "footnotes": [
+            1,
+            4
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Strategic repositioning remains uncertain",
+          "body": "While management acknowledges profitability challenges, visibility on decisive structural reform or portfolio rationalization remains limited over the next 6–12 months.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Further demand deterioration, continued margin erosion, or delayed strategic action could prolong earnings decline and weaken the investment case.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, 決算短信, IR materials)",
+        "2": "Earnings presentations / management commentary",
+        "3": "Industry / competitive context",
+        "4": "Capex / balance-sheet disclosures"
+      }
+    }
+  }
+]
