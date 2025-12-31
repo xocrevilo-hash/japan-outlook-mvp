@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { weeklyRuns } from "../../../../data/adminRuns";
 
+export function generateStaticParams() {
+  return weeklyRuns.map((r) => ({ date: r.date }));
+}
+
 export default function RunDetailPage({ params }: { params: { date: string } }) {
   const run = weeklyRuns.find((r) => r.date === params.date);
 
