@@ -25,7 +25,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
           {c.tags?.slice(0,3).map((t) => <span className="tag" key={t}>{t}</span>)}
         </div>
         <p className="small muted" style={{marginTop: 10}}>
-          Outlook {c.outlook.version} • {c.outlook.horizon} • Last reviewed: {c.outlook.last_reviewed}
+          Outlook {c.outlook.version} • {c.outlook.horizon} • Reviewed: {c.outlook.last_reviewed}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
       </div>
 
       <div className="footer">
-        <a href="/">← Back to search</a>
+        <a href="/" className="small">← Back to search</a>
       </div>
     </main>
   );
