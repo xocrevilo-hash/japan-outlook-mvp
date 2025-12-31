@@ -30,3 +30,4 @@ This produces a fully static site in `out/`.
 
 ## Data
 Edit `data/companies.json` to add companies or update Outlook bullets.
+
