@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next build"
   },
   "dependencies": {
     "@vercel/kv": "^3.0.0",
