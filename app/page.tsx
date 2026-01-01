@@ -28,8 +28,6 @@ function bulletToText(b: any): string {
   }
 }
 
-import Link from "next/link";
-
 export default function HomePage() {
   return (
     <main className="container">
