@@ -1,39 +1,141 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { weeklyRuns } from "../../data/runs";
 import ReviewDrawer from "./components/ReviewDrawer";
+import {
+  clearDecisions,
+  loadDecisions,
+  saveDecisions,
+  upsertDecision,
+} from "../../lib/opsDecisions";
 
 export default function AdminDashboard() {
-  const runs = [...weeklyRuns].sort((a, b) => (a.date < b.date ? 1 : -1));
+  const runs = [...weeklyRuns].sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
   const latest = runs[0];
 
-  const [queue, setQueue] = useState(
-    latest.action_required.map((x: any) => ({
-      ...x,
-      id: `${x.ticker}__${x.suggested_action}__${x.reason}`,
-    }))
-  );
+  const makeId = (x: any) => `${x.ticker}__${x.suggested_action}__${x.reason}`;
 
+  const baseQueue = latest.action_required.map((x: any) => ({
+    ...x,
+    id: makeId(x),
+  }));
+
+  const [queue, setQueue] = useState<any[]>(baseQueue);
   const [selected, setSelected] = useState<any | null>(null);
 
-  const pending = queue.filter((x: any) => x.status === "Needs review");
-  const completed = queue.filter((x: any) => x.status !== "Needs review");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Apply persisted decisions on load
+  useEffect(() => {
+    const saved = loadDecisions(latest.date);
+    if (!saved.length) return;
+
+    setQueue((prev) =>
+      prev.map((x) => {
+        const hit = saved.find((d: any) => d.id === x.id);
+        return hit ? { ...x, status: hit.status } : x;
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latest.date]);
+
+  const pending = queue.filter((x) => x.status === "Needs review");
+  const completed = queue.filter((x) => x.status !== "Needs review");
+
+  const flaggedCount = pending.length;
+  const approvedCount = queue.filter((x) => x.status === "Approved").length;
 
   return (
     <main className="wrap">
       <div className="topbar" style={{ marginBottom: 18 }}>
         <a className="brand" href="/">Japan Outlook</a>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+
+        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <span className="tag">Internal Ops</span>
           <a className="small" href="/">Public site</a>
+
+          <button
+            className="btn"
+            onClick={() => {
+              const payload = {
+                runDate: latest.date,
+                exportedAt: new Date().toISOString(),
+                decisions: loadDecisions(latest.date),
+              };
+              const blob = new Blob([JSON.stringify(payload, null, 2)], {
+                type: "application/json",
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `decisions-${latest.date}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+          >
+            Export decisions
+          </button>
+
+          <button className="btn" onClick={() => fileInputRef.current?.click()}>
+            Import decisions
+          </button>
+
+          <button
+            className="btn"
+            onClick={() => {
+              clearDecisions(latest.date);
+              setQueue(baseQueue);
+              setSelected(null);
+            }}
+          >
+            Clear
+          </button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            style={{ display: "none" }}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              try {
+                const text = await file.text();
+                const parsed = JSON.parse(text);
+                const runDate = parsed?.runDate;
+                const decisions = parsed?.decisions;
+
+                if (!runDate || !Array.isArray(decisions)) {
+                  e.currentTarget.value = "";
+                  return;
+                }
+
+                saveDecisions(runDate, decisions);
+
+                if (runDate === latest.date) {
+                  setQueue((prev) =>
+                    prev.map((x) => {
+                      const hit = decisions.find((d: any) => d.id === x.id);
+                      return hit ? { ...x, status: hit.status } : x;
+                    })
+                  );
+                }
+              } catch {
+                // ignore invalid JSON
+              } finally {
+                e.currentTarget.value = "";
+              }
+            }}
+          />
         </div>
       </div>
 
       <h1 style={{ margin: "6px 0 6px" }}>Internal Ops Dashboard</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Latest run: <b>{latest.date}</b> • Last full scan: <b>{latest.health.last_scan}</b>
+        Latest run: <b>{latest.date}</b> • Last scan: <b>{latest.health.last_scan}</b>
       </p>
 
       <div className="grid2" style={{ marginTop: 14 }}>
@@ -41,21 +143,14 @@ export default function AdminDashboard() {
           <div className="muted small">Companies monitored</div>
           <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.companies_monitored}</div>
         </div>
-
         <div className="card">
           <div className="muted small">Flagged (action required)</div>
-          <div style={{ fontSize: 28, fontWeight: 800 }}>
-            {queue.filter((x: any) => x.status === "Needs review").length}
-          </div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{flaggedCount}</div>
         </div>
-
         <div className="card">
           <div className="muted small">Approved updates</div>
-          <div style={{ fontSize: 28, fontWeight: 800 }}>
-            {queue.filter((x: any) => x.status === "Approved").length}
-          </div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{approvedCount}</div>
         </div>
-
         <div className="card">
           <div className="muted small">Errors</div>
           <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.errors}</div>
@@ -65,146 +160,85 @@ export default function AdminDashboard() {
       <section style={{ marginTop: 22 }}>
         <h2>Action Required</h2>
         <div className="card" style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Company</th>
-                <th>Ticker</th>
-                <th>Reason flagged</th>
-                <th>Suggested</th>
-                <th>Confidence</th>
-                <th>Sources</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pending.map((x: any) => (
-                <tr
-                  key={x.id}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setSelected(x)}
-                >
-                  <td>{x.company}</td>
-                  <td>{x.ticker}</td>
-                  <td className="muted">{x.reason}</td>
-                  <td>{x.suggested_action}</td>
-                  <td><span className="tag">{x.confidence}</span></td>
-                  <td className="muted">{x.sources.join(" + ")}</td>
-                  <td>{x.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="muted small" style={{ marginTop: 10 }}>
-            Click a row to review, then Approve/Reject/Defer (stub).
-          </p>
-        </div>
-      </section>
-
-<section style={{ marginTop: 22 }}>
-  <h2>Completed this run</h2>
-  <div className="card" style={{ overflowX: "auto" }}>
-    {completed.length === 0 ? (
-      <p className="muted">No completed items yet.</p>
-    ) : (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>Ticker</th>
-            <th>Suggested</th>
-            <th>Outcome</th>
-            <th>Confidence</th>
-            <th>Sources</th>
-          </tr>
-        </thead>
-        <tbody>
-          {completed.map((x: any) => (
-            <tr
-              key={x.id}
-              style={{ cursor: "pointer" }}
-              onClick={() => setSelected(x)}
-            >
-              <td>{x.company}</td>
-              <td>{x.ticker}</td>
-              <td className="muted">{x.suggested_action}</td>
-              <td><span className="tag">{x.status}</span></td>
-              <td><span className="tag">{x.confidence}</span></td>
-              <td className="muted">{x.sources.join(" + ")}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    )}
-    <p className="muted small" style={{ marginTop: 10 }}>
-      Items move here after you approve / reject / defer.
-    </p>
-  </div>
-</section>
-
-      <section style={{ marginTop: 22 }}>
-        <h2>Manual Overrides</h2>
-        <div className="card">
-          {latest.overrides.length === 0 ? (
-            <p className="muted">No active overrides.</p>
+          {pending.length === 0 ? (
+            <p className="muted">No items pending review.</p>
           ) : (
             <table className="table">
               <thead>
                 <tr>
                   <th>Company</th>
                   <th>Ticker</th>
-                  <th>Override</th>
-                  <th>Note</th>
-                  <th>Expires</th>
+                  <th>Reason</th>
+                  <th>Suggested</th>
+                  <th>Confidence</th>
+                  <th>Sources</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                {latest.overrides.map((o: any) => (
-                  <tr key={o.ticker + o.override_type}>
-                    <td>{o.company}</td>
-                    <td>{o.ticker}</td>
-                    <td>{o.override_type}</td>
-                    <td className="muted">{o.note}</td>
-                    <td className="muted">{o.expires}</td>
-                    <td>{o.status}</td>
+                {pending.map((x) => (
+                  <tr
+                    key={x.id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelected(x)}
+                  >
+                    <td>{x.company}</td>
+                    <td>{x.ticker}</td>
+                    <td className="muted">{x.reason}</td>
+                    <td>{x.suggested_action}</td>
+                    <td><span className="tag">{x.confidence}</span></td>
+                    <td className="muted">{x.sources.join(" + ")}</td>
+                    <td>{x.status}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
-          <p className="muted small" style={{ marginTop: 10 }}>
-            (Stub) In v2 this becomes an “Add override” modal with expiry rules.
-          </p>
         </div>
       </section>
 
       <section style={{ marginTop: 22 }}>
-        <h2>System Health</h2>
-        <div className="grid2">
-          <div className="card">
-            <div className="muted small">TDnet ingestion</div>
-            <div style={{ fontWeight: 700 }}>{latest.health.tdnet}</div>
-          </div>
-          <div className="card">
-            <div className="muted small">Transcripts</div>
-            <div style={{ fontWeight: 700 }}>{latest.health.transcripts}</div>
-          </div>
-          <div className="card">
-            <div className="muted small">News</div>
-            <div style={{ fontWeight: 700 }}>{latest.health.news}</div>
-          </div>
-          <div className="card">
-            <div className="muted small">Social</div>
-            <div style={{ fontWeight: 700 }}>{latest.health.social}</div>
-          </div>
+        <h2>Completed this run</h2>
+        <div className="card" style={{ overflowX: "auto" }}>
+          {completed.length === 0 ? (
+            <p className="muted">No completed items yet.</p>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Ticker</th>
+                  <th>Suggested</th>
+                  <th>Outcome</th>
+                  <th>Confidence</th>
+                  <th>Sources</th>
+                </tr>
+              </thead>
+              <tbody>
+                {completed.map((x) => (
+                  <tr
+                    key={x.id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelected(x)}
+                  >
+                    <td>{x.company}</td>
+                    <td>{x.ticker}</td>
+                    <td className="muted">{x.suggested_action}</td>
+                    <td><span className="tag">{x.status}</span></td>
+                    <td><span className="tag">{x.confidence}</span></td>
+                    <td className="muted">{x.sources.join(" + ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </section>
 
       <section style={{ marginTop: 22, paddingBottom: 40 }}>
         <h2>Weekly Log</h2>
         <div className="card">
-          {runs.map((r) => (
+          {runs.map((r: any) => (
             <div
               key={r.date}
               style={{
@@ -231,11 +265,23 @@ export default function AdminDashboard() {
         item={selected}
         onClose={() => setSelected(null)}
         onAction={(action) => {
-          if (!selected?.id) return;
-          setQueue((prev: any[]) =>
-            prev.map((x) => (x.id === selected.id ? { ...x, status: action } : x))
+          const id = selected?.id;
+          if (!id) return;
+
+          setQueue((prev) =>
+            prev.map((x) => (x.id === id ? { ...x, status: action } : x))
           );
-          setSelected(null); // your preference A: close after action
+
+          upsertDecision(latest.date, {
+            runDate: latest.date,
+            id,
+            ticker: selected.ticker,
+            company: selected.company,
+            status: action,
+            decidedAt: new Date().toISOString(),
+          });
+
+          setSelected(null);
         }}
       />
     </main>
