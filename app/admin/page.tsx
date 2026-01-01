@@ -1,9 +1,25 @@
+"use client";
+
 import Link from "next/link";
-import { weeklyRuns } from "../../data/adminRuns";
+import { useState } from "react";
+import { weeklyRuns } from "../../data/runs";
+import ReviewDrawer from "./components/ReviewDrawer";
 
 export default function AdminDashboard() {
   const runs = [...weeklyRuns].sort((a, b) => (a.date < b.date ? 1 : -1));
   const latest = runs[0];
+
+  const [queue, setQueue] = useState(
+    latest.action_required.map((x: any) => ({
+      ...x,
+      id: `${x.ticker}__${x.suggested_action}__${x.reason}`,
+    }))
+  );
+
+  const [selected, setSelected] = useState<any | null>(null);
+
+  const pending = queue.filter((x: any) => x.status === "Needs review");
+  const completed = queue.filter((x: any) => x.status !== "Needs review");
 
   return (
     <main className="wrap">
@@ -25,14 +41,21 @@ export default function AdminDashboard() {
           <div className="muted small">Companies monitored</div>
           <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.companies_monitored}</div>
         </div>
+
         <div className="card">
           <div className="muted small">Flagged (action required)</div>
-          <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.flagged_count}</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>
+            {queue.filter((x: any) => x.status === "Needs review").length}
+          </div>
         </div>
+
         <div className="card">
           <div className="muted small">Approved updates</div>
-          <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.approved_updates}</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>
+            {queue.filter((x: any) => x.status === "Approved").length}
+          </div>
         </div>
+
         <div className="card">
           <div className="muted small">Errors</div>
           <div style={{ fontSize: 28, fontWeight: 800 }}>{latest.errors}</div>
@@ -55,8 +78,12 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {latest.action_required.map((x) => (
-                <tr key={x.ticker + x.reason}>
+              {pending.map((x: any) => (
+                <tr
+                  key={x.id}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setSelected(x)}
+                >
                   <td>{x.company}</td>
                   <td>{x.ticker}</td>
                   <td className="muted">{x.reason}</td>
@@ -69,10 +96,51 @@ export default function AdminDashboard() {
             </tbody>
           </table>
           <p className="muted small" style={{ marginTop: 10 }}>
-            (Stub) Clicking rows will open a review drawer in v2.
+            Click a row to review, then Approve/Reject/Defer (stub).
           </p>
         </div>
       </section>
+
+<section style={{ marginTop: 22 }}>
+  <h2>Completed this run</h2>
+  <div className="card" style={{ overflowX: "auto" }}>
+    {completed.length === 0 ? (
+      <p className="muted">No completed items yet.</p>
+    ) : (
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Ticker</th>
+            <th>Suggested</th>
+            <th>Outcome</th>
+            <th>Confidence</th>
+            <th>Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+          {completed.map((x: any) => (
+            <tr
+              key={x.id}
+              style={{ cursor: "pointer" }}
+              onClick={() => setSelected(x)}
+            >
+              <td>{x.company}</td>
+              <td>{x.ticker}</td>
+              <td className="muted">{x.suggested_action}</td>
+              <td><span className="tag">{x.status}</span></td>
+              <td><span className="tag">{x.confidence}</span></td>
+              <td className="muted">{x.sources.join(" + ")}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+    <p className="muted small" style={{ marginTop: 10 }}>
+      Items move here after you approve / reject / defer.
+    </p>
+  </div>
+</section>
 
       <section style={{ marginTop: 22 }}>
         <h2>Manual Overrides</h2>
@@ -92,7 +160,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {latest.overrides.map((o) => (
+                {latest.overrides.map((o: any) => (
                   <tr key={o.ticker + o.override_type}>
                     <td>{o.company}</td>
                     <td>{o.ticker}</td>
@@ -157,6 +225,19 @@ export default function AdminDashboard() {
           ))}
         </div>
       </section>
+
+      <ReviewDrawer
+        open={!!selected}
+        item={selected}
+        onClose={() => setSelected(null)}
+        onAction={(action) => {
+          if (!selected?.id) return;
+          setQueue((prev: any[]) =>
+            prev.map((x) => (x.id === selected.id ? { ...x, status: action } : x))
+          );
+          setSelected(null); // your preference A: close after action
+        }}
+      />
     </main>
   );
 }
