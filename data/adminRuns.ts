@@ -21,6 +21,14 @@ export type AdminRunItem = {
 export type AdminRun = {
   date: string; // YYYY-MM-DD
   last_full_scan_jst?: string;
+
+  // legacy summary fields (older run files)
+  companies_monitored?: number;
+  flagged_count?: number;
+  approved_updates?: number;
+  deferred?: number;
+  errors?: number;
+
   summary?: {
     flagged?: number;
     approved_updates?: number;
