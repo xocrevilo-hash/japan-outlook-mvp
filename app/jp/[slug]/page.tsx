@@ -48,7 +48,7 @@ function bulletNumber(b: any, fallback: number) {
   return fallback;
 }
 
-export default function CompanyPage({ params }: { params: { slug: string } }) {
+export default async function CompanyPage({ params }: { params: { slug: string } }) {
   const c = findBySlug(params.slug);
   const opsMeta = await getOpsMeta(c?.ticker);
 
