@@ -1,11 +1,11 @@
 import { allCompanies, findBySlug } from "../../../lib/companies";
-import { lastRunMentioningTicker } from "../../../lib/opsRuns";
+import ViewTracker from "./ViewTracker";
 
 export function generateStaticParams() {
   return allCompanies().map((c: any) => ({ slug: c.slug }));
 }
 
-function superscriptFromNumber(n: number) {
+function superscript(n: number) {
   const map: Record<string, string> = {
     "0": "⁰",
     "1": "¹",
@@ -29,7 +29,6 @@ function bulletText(b: any): string {
   if (typeof b === "string") return b;
   if (typeof b === "number") return String(b);
 
-  // common object shapes we’ve seen
   if (typeof b === "object") {
     if (typeof b.body === "string") return b.body;
     if (typeof b.claim === "string") return b.claim;
@@ -43,14 +42,14 @@ function bulletText(b: any): string {
   }
 }
 
-function bulletFootnoteNumber(b: any, fallbackIndex: number): number {
-  // if bullet has an explicit number like { n: 1 }
+function bulletNumber(b: any, fallback: number) {
   if (b && typeof b === "object" && typeof b.n === "number") return b.n;
-  return fallbackIndex;
+  return fallback;
 }
 
 export default function CompanyPage({ params }: { params: { slug: string } }) {
   const c = findBySlug(params.slug);
+
   if (!c) {
     return (
       <main className="container">
@@ -59,37 +58,34 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     );
   }
 
-  const lastRun = lastRunMentioningTicker(c.ticker);
-
-  // bullets may be strings or objects
-  const bullets: any[] = Array.isArray(c.outlook?.bullets) ? c.outlook.bullets : [];
-
-  // risks may be string or object
+  const bullets = Array.isArray(c.outlook?.bullets) ? c.outlook.bullets : [];
   const risks = bulletText(c.outlook?.primary_risks);
-
-  const footnoteKey = c.outlook?.footnote_key ?? {};
+  const footnotes = c.outlook?.footnote_key ?? {};
 
   return (
     <main className="container">
+      {/* Step 5: silent page-view tracking */}
+      <ViewTracker slug={c.slug} />
+
       <h1 style={{ marginBottom: 4 }}>
         {c.name} ({c.ticker})
       </h1>
 
-      {lastRun && (
+      {c?.outlook?.last_reviewed ? (
         <p className="muted small" style={{ marginTop: 0 }}>
-          Last ops review: <a href={`/admin/run/${lastRun}`}>{lastRun}</a>
+          Last reviewed: <b>{c.outlook.last_reviewed}</b>
+          {c?.outlook?.version ? <> · Version: <b>{c.outlook.version}</b></> : null}
         </p>
-      )}
+      ) : null}
 
       <section style={{ marginTop: 16 }}>
         <h2>Outlook</h2>
         <ul>
           {bullets.map((b: any, i: number) => {
-            const n = bulletFootnoteNumber(b, i + 1);
-            const text = bulletText(b);
+            const n = bulletNumber(b, i + 1);
             return (
               <li key={i}>
-                {text} <sup>{superscriptFromNumber(n)}</sup>
+                {bulletText(b)} <sup>{superscript(n)}</sup>
               </li>
             );
           })}
@@ -104,15 +100,15 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
       <section style={{ marginTop: 18 }}>
         <h3>Sources</h3>
         <ul className="small muted">
-          {Array.isArray(footnoteKey)
-            ? footnoteKey.map((v: any, idx: number) => (
-                <li key={idx}>
-                  {superscriptFromNumber(idx + 1)} {bulletText(v)}
+          {Array.isArray(footnotes)
+            ? footnotes.map((v: any, i: number) => (
+                <li key={i}>
+                  {superscript(i + 1)} {bulletText(v)}
                 </li>
               ))
-            : Object.entries(footnoteKey).map(([k, v]: any) => (
+            : Object.entries(footnotes).map(([k, v]: any) => (
                 <li key={k}>
-                  {superscriptFromNumber(Number(k))} {bulletText(v)}
+                  {superscript(Number(k))} {bulletText(v)}
                 </li>
               ))}
         </ul>
@@ -120,4 +116,3 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     </main>
   );
 }
-
