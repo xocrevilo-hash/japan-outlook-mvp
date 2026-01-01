@@ -82,7 +82,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
       <ViewTracker slug={c.slug} />
 
       <h1 style={{ marginBottom: 4 }}>
-        {c.name} ({c.ticker})
+        {c.name_en} ({c.ticker})
       </h1>
 
       {c?.outlook?.last_reviewed ? (
