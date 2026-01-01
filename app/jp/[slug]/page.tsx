@@ -59,7 +59,21 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   }
 
   const bullets = Array.isArray(c.outlook?.bullets) ? c.outlook.bullets : [];
-  const risks = bulletText(c.outlook?.primary_risks);
+  
+  // Risks: prefer an explicit field if present, otherwise fall back to last bullet
+  const explicitRisks =
+    (c as any).outlook?.primary_risks ??
+    (c as any).outlook?.primaryRisks ??
+    (c as any).outlook?.risks ??
+    null;
+
+  const risks =
+    explicitRisks != null
+      ? bulletText(explicitRisks)
+      : bullets.length > 0
+      ? bulletText(bullets[bullets.length - 1])
+      : "";
+
   const footnotes = c.outlook?.footnote_key ?? {};
 
   return (
