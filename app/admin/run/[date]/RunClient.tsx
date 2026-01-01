@@ -438,8 +438,8 @@ export default function RunClient({
                       <td><b>{x.decision}</b></td>
                       <td>{x.notes ?? ""}</td>
                       <td className="muted small">
-                        {x.decided_at_iso ? new Date(x.decided_at_iso).toLocaleString() : ""}
-                      </td>
+                         {x.decided_at_iso ? String(x.decided_at_iso).replace("T", " ").replace(".000Z", "Z") : ""}
+                      </td>                      
                     </tr>
                   ))
                 )}
