@@ -1,5 +1,6 @@
 import { allCompanies, findBySlug } from "../../../lib/companies";
 import ViewTracker from "./ViewTracker";
+import { getOpsMeta } from "../../../lib/opsMeta";
 
 export function generateStaticParams() {
   return allCompanies().map((c: any) => ({ slug: c.slug }));
@@ -49,6 +50,7 @@ function bulletNumber(b: any, fallback: number) {
 
 export default function CompanyPage({ params }: { params: { slug: string } }) {
   const c = findBySlug(params.slug);
+  const opsMeta = await getOpsMeta(c?.ticker);
 
   if (!c) {
     return (
@@ -84,6 +86,21 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
       <h1 style={{ marginBottom: 4 }}>
         {c.name_en} ({c.ticker})
       </h1>
+
+{opsMeta?.run && (
+  <div
+    style={{
+      marginTop: 6,
+      fontSize: 13,
+      color: "#666",
+    }}
+  >
+    Ops update: run {opsMeta.run}
+    {opsMeta.published_at && (
+      <> · published {new Date(opsMeta.published_at).toLocaleDateString()}</>
+    )}
+  </div>
+)}
 
       {c?.outlook?.last_reviewed ? (
         <p className="muted small" style={{ marginTop: 0 }}>
