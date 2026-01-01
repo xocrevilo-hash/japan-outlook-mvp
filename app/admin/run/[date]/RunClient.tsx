@@ -57,7 +57,7 @@ function decisionToStatus(d: Decision): string {
   return d;
 }
 
-/** Minimal drawer (no dependencies) */
+/** Minimal drawer */
 function Drawer({
   open,
   item,
@@ -164,11 +164,46 @@ function Drawer({
         </div>
 
         <p className="muted small" style={{ marginTop: 10 }}>
-          Decisions are stored locally for now (per device). Later we can move this to a shared store.
+          Decisions sync to Vercel KV when available; local storage is a fallback.
         </p>
       </aside>
     </>
   );
+}
+
+async function fetchKvDecisions(runDate: string): Promise<DecisionRecord[] | null> {
+  try {
+    const res = await fetch(`/api/ops/decisions?run=${encodeURIComponent(runDate)}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const items = Array.isArray(json?.items) ? json.items : [];
+    return items as DecisionRecord[];
+  } catch {
+    return null;
+  }
+}
+
+async function postKvDecision(runDate: string, record: DecisionRecord): Promise<boolean> {
+  try {
+    const res = await fetch("/api/ops/decisions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ runDate, record }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+function copyToClipboard(text: string) {
+  try {
+    navigator.clipboard.writeText(text);
+  } catch {
+    // ignore
+  }
 }
 
 export default function RunClient({
@@ -191,17 +226,37 @@ export default function RunClient({
 
   const [decisionMap, setDecisionMap] = useState<Record<string, DecisionRecord>>({});
 
+  // Load decisions: KV first, fallback to localStorage
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(storageKey(runDate));
-      if (!raw) return;
-      const arr: DecisionRecord[] = JSON.parse(raw);
-      const map: Record<string, DecisionRecord> = {};
-      for (const r of arr) map[r.id] = r;
-      setDecisionMap(map);
-    } catch {
-      // ignore
-    }
+    let cancelled = false;
+
+    (async () => {
+      const kvItems = await fetchKvDecisions(runDate);
+      if (!cancelled && kvItems && kvItems.length) {
+        const map: Record<string, DecisionRecord> = {};
+        for (const r of kvItems) map[r.id] = r;
+        setDecisionMap(map);
+
+        try {
+          localStorage.setItem(storageKey(runDate), JSON.stringify(kvItems));
+        } catch {}
+        return;
+      }
+
+      // fallback: localStorage
+      try {
+        const raw = localStorage.getItem(storageKey(runDate));
+        if (!raw) return;
+        const arr: DecisionRecord[] = JSON.parse(raw);
+        const map: Record<string, DecisionRecord> = {};
+        for (const r of arr) map[r.id] = r;
+        setDecisionMap(map);
+      } catch {}
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [runDate]);
 
   const enriched = useMemo(() => {
@@ -238,6 +293,37 @@ export default function RunClient({
     return { total, needs, bullet, risk, noise };
   }, [enriched]);
 
+  // Strict publish-ready list: Approved + Bullet/Risk only
+  const publishReady = useMemo(() => {
+    return enriched.filter(
+      (x: any) =>
+        x.status === "Approved" &&
+        (x.action_type === "Bullet" || x.action_type === "Risk") &&
+        (x.action_type !== "Bullet" || typeof x.bullet_no === "number") &&
+        (x.action_type !== "Bullet" || !!x.proposed_bullet)
+    );
+  }, [enriched]);
+
+  const publishPatchText = useMemo(() => {
+    if (!publishReady.length) return "";
+    const lines: string[] = [];
+    lines.push(`Publish patch (run ${runDate})`);
+    lines.push(`----------------------------------------`);
+    for (const x of publishReady as any[]) {
+      const target =
+        x.action_type === "Risk"
+          ? "Primary Risks"
+          : `Bullet #${x.bullet_no}`;
+      const body = x.action_type === "Risk"
+        ? (x.proposed_bullet || x.suggested_action || "")
+        : (x.proposed_bullet || "");
+      lines.push(`${x.ticker} ${x.company} — ${target}`);
+      lines.push(body);
+      lines.push("");
+    }
+    return lines.join("\n");
+  }, [publishReady, runDate]);
+
   const completedDerived = useMemo(() => {
     const local = Object.values(decisionMap).map((r) => ({
       company: r.company,
@@ -254,7 +340,7 @@ export default function RunClient({
     setOpen(true);
   }
 
-  function saveDecision(decision: Decision, pmNote: string) {
+  async function saveDecision(decision: Decision, pmNote: string) {
     if (!selected) return;
 
     const id = selected.id ?? `${selected.ticker}-${selected.action_type}-${selected.bullet_no ?? "na"}`;
@@ -270,14 +356,17 @@ export default function RunClient({
       decided_at_iso: new Date().toISOString(),
     };
 
+    // Update UI immediately
     const next = { ...decisionMap, [id]: rec };
     setDecisionMap(next);
 
+    // Persist to KV (best-effort)
+    await postKvDecision(runDate, rec);
+
+    // Keep local fallback
     try {
       localStorage.setItem(storageKey(runDate), JSON.stringify(Object.values(next)));
-    } catch {
-      // ignore
-    }
+    } catch {}
 
     setOpen(false);
     setSelected(null);
@@ -366,6 +455,63 @@ export default function RunClient({
           </div>
         </div>
 
+        {/* Publish-ready section */}
+        <section style={{ marginTop: 14 }}>
+          <h2>Approved updates (ready to publish)</h2>
+          <div className="card">
+            {publishReady.length === 0 ? (
+              <div className="muted">None</div>
+            ) : (
+              <>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <span className="tag">{publishReady.length} approved changes</span>
+                  <button className="btn" onClick={() => copyToClipboard(publishPatchText)}>
+                    Copy patch list
+                  </button>
+                </div>
+
+                <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
+                  {(publishReady as any[]).map((x) => {
+                    const target =
+                      x.action_type === "Risk" ? "Primary Risks" : `Bullet #${x.bullet_no}`;
+                    const body =
+                      x.action_type === "Risk"
+                        ? (x.proposed_bullet || x.suggested_action || "")
+                        : (x.proposed_bullet || "");
+
+                    const itemText = `${x.ticker} ${x.company} — ${target}\n${body}`;
+
+                    return (
+                      <div key={x.id} className="card" style={{ margin: 0 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+                          <div>
+                            <div style={{ fontWeight: 800 }}>
+                              {x.company} ({x.ticker})
+                            </div>
+                            <div className="muted small">{target}</div>
+                          </div>
+                          <button className="btn" onClick={() => copyToClipboard(itemText)}>
+                            Copy
+                          </button>
+                        </div>
+
+                        <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{body}</div>
+
+                        {x.pm_note ? (
+                          <div style={{ marginTop: 8 }}>
+                            <div className="muted small">PM note</div>
+                            <div className="small">{x.pm_note}</div>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+
         <section style={{ marginTop: 14 }}>
           <h2>Action required</h2>
           <div className="card" style={{ padding: 0 }}>
@@ -438,8 +584,8 @@ export default function RunClient({
                       <td><b>{x.decision}</b></td>
                       <td>{x.notes ?? ""}</td>
                       <td className="muted small">
-                         {x.decided_at_iso ? String(x.decided_at_iso).replace("T", " ").replace(".000Z", "Z") : ""}
-                      </td>                      
+                        {x.decided_at_iso ? String(x.decided_at_iso).replace("T", " ").replace(".000Z", "Z") : ""}
+                      </td>
                     </tr>
                   ))
                 )}
