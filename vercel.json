@@ -1,5 +1,0 @@
-{
-  "buildCommand": "npm run export",
-  "outputDirectory": "out",
-  "framework": null
-}
