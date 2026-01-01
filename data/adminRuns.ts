@@ -12,7 +12,7 @@ export type AdminRunItem = {
   status: string;
 
   // Step 2A / 2B classification
-  action_type: "Bullet" | "Risk" | "NoChange";
+  action_type?: "Bullet" | "Risk" | "NoChange";
   bullet_no?: number;
   current_bullet?: string;
   proposed_bullet?: string;
