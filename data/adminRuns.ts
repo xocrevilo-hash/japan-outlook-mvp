@@ -1,3 +1,6 @@
+// data/adminRuns.ts
+// Canonical data + types for Admin Ops weekly runs
+
 export type AdminRunItem = {
   id?: string;
   company: string;
@@ -8,7 +11,7 @@ export type AdminRunItem = {
   sources: string[];
   status: string;
 
-  // added in Step 2A/2B
+  // Step 2A / 2B classification
   action_type: "Bullet" | "Risk" | "NoChange";
   bullet_no?: number;
   current_bullet?: string;
@@ -34,63 +37,58 @@ export type AdminRun = {
 };
 
 /**
- * Canonical export used by /admin and /admin/run/[date]
- * Keep the name stable to avoid import drift.
+ * Alias type used by individual run files under data/runs/*
+ * Keep this export to avoid breaking imports.
+ */
+export type WeeklyRun = AdminRun;
+
+/**
+ * Canonical export used by:
+ * - /admin
+ * - /admin/run/[date]
+ *
+ * ⚠️ Keep the name ADMIN_RUNS stable.
  */
 export const ADMIN_RUNS: AdminRun[] = [
   {
     date: "2025-12-31",
     last_full_scan_jst: "2025-12-31 13:20 JST",
-    summary: { flagged: 3, approved_updates: 1, errors: 0 },
+    summary: {
+      flagged: 3,
+      approved_updates: 1,
+      errors: 0,
+    },
     action_required: [
       {
         id: "4755-Bullet-1",
         company: "Rakuten Group",
         ticker: "4755",
-        reason: "Management emphasis shift (unit economics vs growth) referenced more prominently",
+        reason:
+          "Management emphasis shift toward unit economics referenced more prominently in recent disclosures",
         suggested_action: "Update Bullet 1",
         confidence: "High",
-        sources: ["TDnet", "Transcript"],
+        sources: ["TDnet", "Earnings transcript"],
         status: "Needs review",
         action_type: "Bullet",
         bullet_no: 1,
-        current_bullet: "Mobile losses remain the dominant near-term drag on group profitability.",
+        current_bullet:
+          "Mobile losses remain the dominant near-term drag on group profitability.",
         proposed_bullet:
-          "Mobile losses remain the dominant near-term drag, with management emphasis increasingly on unit economics and a credible path to profitability over the next few quarters.",
+          "Mobile losses remain the dominant near-term drag, with management placing increasing emphasis on unit economics and ARPU stabilization.",
       },
       {
-        id: "6963-Risk-na",
+        id: "6963-Risk-1",
         company: "Rohm",
         ticker: "6963",
-        reason: "End-market weakness flagged as a more material downside risk",
+        reason:
+          "End-market demand softness (autos / industrial) framed more explicitly as a downside risk",
         suggested_action: "Update Primary Risks",
         confidence: "Low",
-        sources: ["News"],
+        sources: ["TDnet"],
         status: "Needs review",
         action_type: "Risk",
-        proposed_bullet:
-          "Primary risks: a sharper-than-expected downturn in autos/industrial demand, prolonged inventory correction, and margin pressure if pricing remains weak or utilization stays depressed.",
-      },
-      {
-        id: "4751-NoChange-na",
-        company: "CyberAgent",
-        ticker: "4751",
-        reason: "Minor headline noise; no durable fundamental change identified",
-        suggested_action: "No change (noise)",
-        confidence: "Low",
-        sources: ["News"],
-        status: "Needs review",
-        action_type: "NoChange",
       },
     ],
-    completed: [
-      {
-        company: "Fuji Media Holdings",
-        ticker: "4676",
-        decision: "Approved",
-        notes: "Minor wording refinement approved.",
-        decided_at_iso: "2025-12-31T13:05:00+09:00",
-      },
-    ],
+    completed: [],
   },
 ];
