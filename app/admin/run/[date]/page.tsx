@@ -1,126 +1,191 @@
 import Link from "next/link";
-import { weeklyRuns } from "../../../../data/adminRuns";
+import { weeklyRuns } from "../../../../data/runs";
 
 export function generateStaticParams() {
-  return weeklyRuns.map((r) => ({ date: r.date }));
+  return weeklyRuns.map((r: any) => ({ date: r.date }));
 }
 
 export default function RunDetailPage({ params }: { params: { date: string } }) {
-  const run = weeklyRuns.find((r) => r.date === params.date);
+  const run = weeklyRuns.find((r: any) => r.date === params.date);
 
   if (!run) {
     return (
       <main className="wrap">
-        <div className="topbar">
+        <div className="topbar" style={{ marginBottom: 18 }}>
           <a className="brand" href="/">Japan Outlook</a>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Link className="small" href="/admin">Back to dashboard</Link>
+            <span className="tag">Internal Ops</span>
+            <a className="small" href="/admin">Back to dashboard</a>
           </div>
         </div>
         <h1>Run not found</h1>
-        <p className="muted">No run exists for date: {params.date}</p>
+        <p className="muted">No weekly snapshot exists for: {params.date}</p>
       </main>
     );
   }
 
+  const pending = run.action_required.filter((x: any) => x.status === "Needs review");
+  const completed = run.action_required.filter((x: any) => x.status !== "Needs review");
+
   return (
-    <main className="wrap" style={{ paddingBottom: 40 }}>
+    <main className="wrap">
       <div className="topbar" style={{ marginBottom: 18 }}>
         <a className="brand" href="/">Japan Outlook</a>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <Link className="small" href="/admin">Internal Ops</Link>
-          <span className="tag">Weekly Run</span>
+          <span className="tag">Internal Ops</span>
+          <Link className="small" href="/admin">Back to dashboard</Link>
         </div>
       </div>
 
       <h1 style={{ margin: "6px 0 6px" }}>Weekly Run: {run.date}</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Monitored: <b>{run.companies_monitored}</b> • Flagged: <b>{run.flagged_count}</b> • Approved: <b>{run.approved_updates}</b> • Deferred: <b>{run.deferred}</b> • Errors: <b>{run.errors}</b>
+        Last full scan: <b>{run.health?.last_scan ?? "—"}</b>
       </p>
 
-      <section style={{ marginTop: 18 }}>
+      <div className="grid2" style={{ marginTop: 14 }}>
+        <div className="card">
+          <div className="muted small">Companies monitored</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{run.companies_monitored}</div>
+        </div>
+        <div className="card">
+          <div className="muted small">Flagged (action required)</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{pending.length}</div>
+        </div>
+        <div className="card">
+          <div className="muted small">Approved updates</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>
+            {run.action_required.filter((x: any) => x.status === "Approved").length}
+          </div>
+        </div>
+        <div className="card">
+          <div className="muted small">Errors</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{run.errors}</div>
+        </div>
+      </div>
+
+      <section style={{ marginTop: 22 }}>
         <h2>Action Required</h2>
         <div className="card" style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Company</th>
-                <th>Ticker</th>
-                <th>Reason</th>
-                <th>Suggested</th>
-                <th>Confidence</th>
-                <th>Sources</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {run.action_required.map((x) => (
-                <tr key={x.ticker + x.reason}>
-                  <td>{x.company}</td>
-                  <td>{x.ticker}</td>
-                  <td className="muted">{x.reason}</td>
-                  <td>{x.suggested_action}</td>
-                  <td><span className="tag">{x.confidence}</span></td>
-                  <td className="muted">{x.sources.join(" + ")}</td>
-                  <td>{x.status}</td>
+          {pending.length === 0 ? (
+            <p className="muted">No items pending review for this run.</p>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Ticker</th>
+                  <th>Reason flagged</th>
+                  <th>Suggested</th>
+                  <th>Confidence</th>
+                  <th>Sources</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pending.map((x: any) => (
+                  <tr key={x.ticker + x.reason}>
+                    <td>{x.company}</td>
+                    <td>{x.ticker}</td>
+                    <td className="muted">{x.reason}</td>
+                    <td>{x.suggested_action}</td>
+                    <td><span className="tag">{x.confidence}</span></td>
+                    <td className="muted">{x.sources.join(" + ")}</td>
+                    <td>{x.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <p className="muted small" style={{ marginTop: 10 }}>
+            This is a historical snapshot of the queue as of {run.date}.
+          </p>
         </div>
       </section>
 
-      <section style={{ marginTop: 18 }}>
-        <h2>Completed</h2>
+      <section style={{ marginTop: 22 }}>
+        <h2>Completed this run</h2>
         <div className="card" style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Company</th>
-                <th>Ticker</th>
-                <th>Outcome</th>
-                <th>Version</th>
-              </tr>
-            </thead>
-            <tbody>
-              {run.completed.map((c) => (
-                <tr key={c.ticker}>
-                  <td>{c.company}</td>
-                  <td>{c.ticker}</td>
-                  <td>{c.outcome}</td>
-                  <td className="muted">{c.version}</td>
+          {completed.length === 0 ? (
+            <p className="muted">No completed items for this run.</p>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Ticker</th>
+                  <th>Suggested</th>
+                  <th>Outcome</th>
+                  <th>Confidence</th>
+                  <th>Sources</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {completed.map((x: any) => (
+                  <tr key={x.ticker + x.reason}>
+                    <td>{x.company}</td>
+                    <td>{x.ticker}</td>
+                    <td className="muted">{x.suggested_action}</td>
+                    <td><span className="tag">{x.status}</span></td>
+                    <td><span className="tag">{x.confidence}</span></td>
+                    <td className="muted">{x.sources.join(" + ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <p className="muted small" style={{ marginTop: 10 }}>
+            Resolved items in this weekly snapshot.
+          </p>
         </div>
       </section>
 
-      <section style={{ marginTop: 18 }}>
-        <h2>Changelog</h2>
+      <section style={{ marginTop: 22 }}>
+        <h2>System Health</h2>
+        <div className="grid2">
+          <div className="card">
+            <div className="muted small">TDnet ingestion</div>
+            <div style={{ fontWeight: 700 }}>{run.health?.tdnet ?? "—"}</div>
+          </div>
+          <div className="card">
+            <div className="muted small">Transcripts</div>
+            <div style={{ fontWeight: 700 }}>{run.health?.transcripts ?? "—"}</div>
+          </div>
+          <div className="card">
+            <div className="muted small">News</div>
+            <div style={{ fontWeight: 700 }}>{run.health?.news ?? "—"}</div>
+          </div>
+          <div className="card">
+            <div className="muted small">Social</div>
+            <div style={{ fontWeight: 700 }}>{run.health?.social ?? "—"}</div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ marginTop: 22, paddingBottom: 40 }}>
+        <h2>All runs</h2>
         <div className="card">
-          {run.changelog.length === 0 ? (
-            <p className="muted">No production changes recorded for this run.</p>
-          ) : (
-            run.changelog.map((c) => (
-              <div key={c.ticker + c.change} style={{ padding: "10px 0", borderTop: "1px solid #f0f0f0" }}>
-                <div><b>{c.company}</b> ({c.ticker}) — {c.change}</div>
-                <div className="muted small">Version: {c.version_from} → {c.version_to}</div>
-                <div className="muted">{c.note}</div>
+          {weeklyRuns
+            .slice()
+            .sort((a: any, b: any) => (a.date < b.date ? 1 : -1))
+            .map((r: any) => (
+              <div
+                key={r.date}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "10px 0",
+                  borderTop: "1px solid #f0f0f0",
+                }}
+              >
+                <div>
+                  <Link href={`/admin/run/${r.date}`}><b>{r.date}</b></Link>
+                  <div className="muted small">
+                    {r.flagged_count} flagged • {r.approved_updates} updates • {r.errors} errors
+                  </div>
+                </div>
+                <Link className="small" href={`/admin/run/${r.date}`}>View →</Link>
               </div>
-            ))
-          )}
-        </div>
-      </section>
-
-      <section style={{ marginTop: 18 }}>
-        <h2>Errors</h2>
-        <div className="card">
-          {run.errors === 0 ? (
-            <p className="muted">No errors recorded.</p>
-          ) : (
-            <p className="muted">Errors exist (stub). In v2 we’ll list ingestion/build issues here.</p>
-          )}
+            ))}
         </div>
       </section>
     </main>
