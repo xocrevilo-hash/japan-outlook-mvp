@@ -1,73 +1,123 @@
-import { allCompanies, findBySlug } from '../../../lib/companies';
+import { allCompanies, findBySlug } from "../../../lib/companies";
+import { lastRunMentioningTicker } from "../../../lib/opsRuns";
 
 export function generateStaticParams() {
-  return allCompanies().map(c => ({ slug: c.slug }));
+  return allCompanies().map((c: any) => ({ slug: c.slug }));
 }
 
-function superscript(n: number) {
-  const map: Record<string, string> = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹' };
-  return String(n).split('').map(d => map[d] || d).join('');
+function superscriptFromNumber(n: number) {
+  const map: Record<string, string> = {
+    "0": "⁰",
+    "1": "¹",
+    "2": "²",
+    "3": "³",
+    "4": "⁴",
+    "5": "⁵",
+    "6": "⁶",
+    "7": "⁷",
+    "8": "⁸",
+    "9": "⁹",
+  };
+  return String(n)
+    .split("")
+    .map((d) => map[d] || d)
+    .join("");
+}
+
+function bulletText(b: any): string {
+  if (b == null) return "";
+  if (typeof b === "string") return b;
+  if (typeof b === "number") return String(b);
+
+  // common object shapes we’ve seen
+  if (typeof b === "object") {
+    if (typeof b.body === "string") return b.body;
+    if (typeof b.claim === "string") return b.claim;
+    if (typeof b.text === "string") return b.text;
+  }
+
+  try {
+    return JSON.stringify(b);
+  } catch {
+    return String(b);
+  }
+}
+
+function bulletFootnoteNumber(b: any, fallbackIndex: number): number {
+  // if bullet has an explicit number like { n: 1 }
+  if (b && typeof b === "object" && typeof b.n === "number") return b.n;
+  return fallbackIndex;
 }
 
 export default function CompanyPage({ params }: { params: { slug: string } }) {
   const c = findBySlug(params.slug);
-  if (!c) return <main className="container"><p>Not found.</p></main>;
+  if (!c) {
+    return (
+      <main className="container">
+        <p>Not found.</p>
+      </main>
+    );
+  }
 
-  const fnKey = c.outlook.footnote_key as Record<string,string>;
+  const lastRun = lastRunMentioningTicker(c.ticker);
+
+  // bullets may be strings or objects
+  const bullets: any[] = Array.isArray(c.outlook?.bullets) ? c.outlook.bullets : [];
+
+  // risks may be string or object
+  const risks = bulletText(c.outlook?.primary_risks);
+
+  const footnoteKey = c.outlook?.footnote_key ?? {};
 
   return (
     <main className="container">
-      <div className="card">
-        <div className="kicker">{c.segment} • {c.sector}</div>
-        <div className="h1">{c.name_en} <span className="muted">({c.ticker} JP)</span></div>
-        <div className="muted">{c.name_ja}</div>
-        <div className="tags">
-          {c.tags?.slice(0,3).map((t) => <span className="tag" key={t}>{t}</span>)}
-        </div>
-        <p className="small muted" style={{marginTop: 10}}>
-          Outlook {c.outlook.version} • {c.outlook.horizon} • Reviewed: {c.outlook.last_reviewed}
+      <h1 style={{ marginBottom: 4 }}>
+        {c.name} ({c.ticker})
+      </h1>
+
+      {lastRun && (
+        <p className="muted small" style={{ marginTop: 0 }}>
+          Last ops review: <a href={`/admin/run/${lastRun}`}>{lastRun}</a>
         </p>
-      </div>
+      )}
 
-      <div className="outlook card" style={{marginTop: 18}}>
-        <div className="kicker">Outlook</div>
-        {c.outlook.bullets.map((b: any) => (
-          <div className="bullet" key={b.n}>
-            <div>
-              <span className="bnum">{b.n})</span>
-              <span className="claim">
-                {b.claim}
-                {b.footnotes.map((fn: number) => (
-                  <a
-                    key={fn}
-                    href={`#fn-${fn}`}
-                    title={fnKey[String(fn)]}
-                    style={{marginLeft: 2, color:'#666'}}
-                  >
-                    {superscript(fn)}
-                  </a>
-                ))}
-                :
-              </span>
-            </div>
-            <div className="muted" style={{marginTop: 6}}>{b.body}</div>
-          </div>
-        ))}
+      <section style={{ marginTop: 16 }}>
+        <h2>Outlook</h2>
+        <ul>
+          {bullets.map((b: any, i: number) => {
+            const n = bulletFootnoteNumber(b, i + 1);
+            const text = bulletText(b);
+            return (
+              <li key={i}>
+                {text} <sup>{superscriptFromNumber(n)}</sup>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
-        <div className="footnotes">
-          <div className="kicker">Footnotes</div>
-          {Object.keys(fnKey).sort((a,b)=>Number(a)-Number(b)).map((k) => (
-            <div className="fnRow" key={k} id={`fn-${k}`}>
-              <div className="fnNum">{k}</div>
-              <div>{fnKey[k]}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <section style={{ marginTop: 18 }}>
+        <h3>Primary Risks</h3>
+        <p>{risks}</p>
+      </section>
 
-      <div className="footer">
-        <a href="/" className="small">← Back to search</a>
-      </div>
+      <section style={{ marginTop: 18 }}>
+        <h3>Sources</h3>
+        <ul className="small muted">
+          {Array.isArray(footnoteKey)
+            ? footnoteKey.map((v: any, idx: number) => (
+                <li key={idx}>
+                  {superscriptFromNumber(idx + 1)} {bulletText(v)}
+                </li>
+              ))
+            : Object.entries(footnoteKey).map(([k, v]: any) => (
+                <li key={k}>
+                  {superscriptFromNumber(Number(k))} {bulletText(v)}
+                </li>
+              ))}
+        </ul>
+      </section>
     </main>
   );
 }
+
