@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Next.js
+.next/
+out/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env
+.env*
+.vercel/
+
+# editor backups
+*.save
+*~
