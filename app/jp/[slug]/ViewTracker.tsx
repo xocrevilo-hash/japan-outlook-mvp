@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackView } from "@/lib/pageViews";
+import { trackView } from "../../../lib/pageViews";
 
 export default function ViewTracker({
   slug,
@@ -11,7 +11,6 @@ export default function ViewTracker({
   ticker?: string;
 }) {
   useEffect(() => {
-    // track by ticker if available, otherwise fall back to slug
     trackView(ticker ?? slug);
   }, [slug, ticker]);
 
