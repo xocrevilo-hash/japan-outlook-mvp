@@ -169,24 +169,36 @@ export default async function CompanyPage({ params }: { params: { slug: string }
         </div>
       </section>
 
-      <h2 style={{ marginTop: 0 }}>Outlook</h2>
-      <ul style={{ lineHeight: 1.7 }}>
-        {bullets.map((b: any) => (
-          <li key={b.n ?? b.claim}>
-            <span style={{ fontWeight: 650 }}>{b.claim}</span>
-            {b.body ? <span> — {b.body}</span> : null}
+      <h2 style={{ marginTop: 0 }}>Outlook (Spec V1)</h2>
+
+      {/* Spec V1: 5 bullets total; #5 is always Primary Risks */}
+      <ol style={{ lineHeight: 1.7, paddingLeft: 18 }}>
+        {bullets.slice(0, 4).map((b: any, idx: number) => (
+          <li key={b.n ?? b.claim ?? idx} style={{ marginBottom: 14 }}>
+            <div style={{ fontWeight: 800 }}>{b.claim}</div>
+            {b.body ? <div className="muted" style={{ marginTop: 4 }}>{b.body}</div> : null}
+
             {Array.isArray(b.footnotes) && b.footnotes.length > 0 ? (
-              <sup style={{ marginLeft: 6 }}>
+              <div style={{ marginTop: 6 }}>
+                <span className="muted small">Sources: </span>
                 {b.footnotes.map((n: number) => (
-                  <span key={n} style={{ marginRight: 4 }}>
+                  <sup key={n} style={{ marginRight: 6, fontWeight: 800 }}>
                     {n}
-                  </span>
+                  </sup>
                 ))}
-              </sup>
+              </div>
             ) : null}
           </li>
         ))}
-      </ul>
+
+        {/* Bullet #5: Primary Risks */}
+        <li style={{ marginBottom: 6 }}>
+          <div style={{ fontWeight: 900 }}>Primary Risks</div>
+          <div className="muted" style={{ marginTop: 6, whiteSpace: "pre-wrap" }}>
+            {risks || "—"}
+          </div>
+        </li>
+      </ol>
 
       <h2 style={{ marginTop: 22 }}>Primary Risks</h2>
       <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.7 }}>{risks || "—"}</p>
