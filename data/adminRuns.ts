@@ -60,10 +60,20 @@ export type AdminRun = {
   completed?: Array<{
     company: string;
     ticker: string;
-    decision: string;
+
+    // allow either "decision" (new) or "outcome" (legacy)
+    decision?: string;
+    outcome?: string;
+
+    // optional extra metadata often useful in logs
+    version?: string;
     notes?: string;
     decided_at_iso?: string;
+
+    // allow additional fields without breaking builds
+    [key: string]: any;
   }>;
+
 
   // Critical MVP escape hatch:
   // allow legacy/extra fields in historical run files without breaking TypeScript builds
