@@ -56,13 +56,13 @@
         {
           "n": 5,
           "claim": "Primary risks",
-          "body": "A slowdown in Mobile subscriber growth, higher-than-expected refinancing costs, or renewed competitive pressure in telecom would materially weaken the 6–12 month investment case and delay re-rating.",
           "footnotes": [
             1,
             2,
             3,
             4
-          ]
+          ],
+          "body": "A slowdown in Mobile subscriber growth could delay the earnings inflection and re-rating. Higher-than-expected refinancing costs could pressure cash flow and reduce balance-sheet flexibility. Renewed competitive intensity in telecom could weaken pricing discipline and margins."
         }
       ],
       "footnote_key": {
@@ -289,265 +289,715 @@
         "4": "Capex / balance-sheet disclosures"
       }
     }
-  }
-,
-{
-  "ticker": "4901",
-  "slug": "4901-fujifilm-holdings",
-  "name_en": "Fujifilm Holdings",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Diversified Industrial / Healthcare",
-  "tags": ["Healthcare", "Imaging", "Materials"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Core businesses remain diversified across cycles", "body": "Stub (to refine): summarize the 1–2 segments that drive earnings over the next 6–12 months and why diversification matters for stability.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Key drivers to monitor are mix and margin", "body": "Stub (to refine): note what management highlights as the main drivers (volume/mix/pricing, FX sensitivity, cost actions) without referencing price action.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Capital allocation is a central part of the narrative", "body": "Stub (to refine): include the company’s posture on buybacks/dividends/investment and how that could influence fundamentals.", "footnotes": [1,3] },
-      { "n": 4, "claim": "Execution milestones should be tied to concrete KPIs", "body": "Stub (to refine): add 1–2 KPIs you want tracked weekly/quarterly (e.g., segment margin, order trend, guidance).", "footnotes": [1,2] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: execution miss vs guidance, margin compression, unfavorable mix/FX, and any segment-specific regulatory/competitive risks.", "footnotes": [1,2,3] }
+  },
+  {
+    "ticker": "4901",
+    "slug": "4901-fujifilm-holdings",
+    "name_en": "Fujifilm Holdings",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Diversified Industrial / Healthcare",
+    "tags": [
+      "Healthcare",
+      "Imaging",
+      "Materials"
     ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Core businesses remain diversified across cycles",
+          "body": "Stub (to refine): summarize the 1–2 segments that drive earnings over the next 6–12 months and why diversification matters for stability.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Key drivers to monitor are mix and margin",
+          "body": "Stub (to refine): note what management highlights as the main drivers (volume/mix/pricing, FX sensitivity, cost actions) without referencing price action.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Capital allocation is a central part of the narrative",
+          "body": "Stub (to refine): include the company’s posture on buybacks/dividends/investment and how that could influence fundamentals.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Execution milestones should be tied to concrete KPIs",
+          "body": "Stub (to refine): add 1–2 KPIs you want tracked weekly/quarterly (e.g., segment margin, order trend, guidance).",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: execution miss vs guidance, margin compression, unfavorable mix/FX, and any segment-specific regulatory/competitive risks.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "7735",
+    "slug": "7735-screen-holdings",
+    "name_en": "SCREEN Holdings",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Semiconductor Equipment",
+    "tags": [
+      "Semicap",
+      "WFE",
+      "Cycle"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Orders and backlog are the primary 6–12 month signal",
+          "body": "Stub: frame the investment case around order momentum, backlog conversion, and management guidance posture.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Cyclicality is high; control the narrative via guidance and mix",
+          "body": "Stub: specify which end-markets or tool categories matter most and how mix affects margins.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Capacity and supply-chain execution remain key",
+          "body": "Stub: highlight delivery constraints, lead-times, and any operational bottlenecks mentioned by management.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital returns vs reinvestment should be monitored",
+          "body": "Stub: note capital allocation stance (buybacks/dividends/capex) and how it interacts with the cycle.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: WFE downturn, customer capex cuts, delayed node transitions, execution misses, and FX sensitivity.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "3064",
+    "slug": "3064-monotaro",
+    "name_en": "MonotaRO",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "E-commerce / Distribution",
+    "tags": [
+      "E-commerce",
+      "SMB",
+      "Logistics"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Structural growth story; watch growth vs margin trade-offs",
+          "body": "Stub: focus on demand drivers, customer acquisition/retention, and how logistics/investment choices affect margins.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Operational scalability is the key differentiator",
+          "body": "Stub: highlight fulfillment capacity, delivery performance, and cost per order trends as key KPIs.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Competitive intensity should be tracked through disclosures",
+          "body": "Stub: note if management flags pricing pressure, service-level competition, or category expansion impacts.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital allocation is typically reinvestment-led",
+          "body": "Stub: state the reinvestment vs shareholder return balance and what would count as a change.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: demand slowdown, margin pressure from logistics/investment, competition, and execution risk in capacity expansion.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "6857",
+    "slug": "6857-advantest",
+    "name_en": "Advantest",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Semiconductor Test Equipment",
+    "tags": [
+      "Semicap",
+      "Test",
+      "Cycle"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Cycle exposure is high; orders and guidance are the main anchors",
+          "body": "Stub: tie the outlook to order trends/backlog conversion and the confidence level implied by guidance.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Product mix influences margins materially",
+          "body": "Stub: describe mix sensitivity (high-end vs commoditized testing, customer concentration if noted).",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Execution on delivery and service is a key monitorable factor",
+          "body": "Stub: track lead times, capacity constraints, and service revenue stability if disclosed.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital allocation: monitor changes in return posture across the cycle",
+          "body": "Stub: note buyback/dividend posture and what would represent a shift.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: customer capex cuts, test spending deferrals, execution misses, and adverse cycle turn.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "6861",
+    "slug": "6861-keyence",
+    "name_en": "Keyence",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Factory Automation / Sensors",
+    "tags": [
+      "Automation",
+      "FA",
+      "Industrial"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Demand tone across FA end-markets drives near-term momentum",
+          "body": "Stub: summarize management’s view on automation demand and end-market breadth.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "High-margin model; watch volume leverage and mix",
+          "body": "Stub: outline what would cause margin expansion/contraction (volume, mix, FX, costs) per disclosures.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Sales execution and product cycle remain key differentiators",
+          "body": "Stub: note product cadence, salesforce productivity signals, and any KPI references.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital allocation is an important investor signal",
+          "body": "Stub: capture buyback/dividend stance and any policy evolution.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: industrial slowdown, capex deferrals, FX sensitivity, and unexpected competitive pressure.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "6098",
+    "slug": "6098-recruit-holdings",
+    "name_en": "Recruit Holdings",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "HR Tech / Services",
+    "tags": [
+      "HR Tech",
+      "Staffing",
+      "Services"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Hiring environment is the main macro sensitivity",
+          "body": "Stub: frame the outlook around hiring demand, client budgets, and management commentary on trends.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Mix across segments drives profitability",
+          "body": "Stub: describe which segments are driving margin and how mix could change.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Investment vs margin discipline is the key trade-off",
+          "body": "Stub: note where investment is being directed and what KPIs matter.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital returns may be an incremental support",
+          "body": "Stub: capture stance on buybacks/dividends and any stated policy framework.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: labor market deterioration, margin pressure, slower platform growth, and execution risk on investment.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "9983",
+    "slug": "9983-fast-retailing",
+    "name_en": "Fast Retailing",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Apparel Retail",
+    "tags": [
+      "Retail",
+      "Brand",
+      "Global"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Sales momentum and gross margin are the core monitors",
+          "body": "Stub: frame the outlook around sales trends, discounting discipline, and regional performance as discussed in disclosures.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Cost inflation and FX are key sensitivities",
+          "body": "Stub: note management commentary on input costs, logistics, and currency impacts.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Inventory discipline is central to confidence",
+          "body": "Stub: highlight inventory posture and any risk of markdowns flagged by management.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital allocation should be monitored for any shift",
+          "body": "Stub: capture any policy on buybacks/dividends and investment priorities.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: demand slowdown, inventory/markdown risk, cost/FX headwinds, and execution risk across regions.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "4063",
+    "slug": "4063-shin-etsu-chemical",
+    "name_en": "Shin-Etsu Chemical",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Chemicals / Materials",
+    "tags": [
+      "Materials",
+      "Semicon",
+      "Chemicals"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "End-market demand signals drive the near-term outlook",
+          "body": "Stub: summarize demand tone across major product lines as conveyed in management commentary.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Pricing and utilization are key margin drivers",
+          "body": "Stub: capture management commentary on pricing discipline, utilization, and cost trends.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Capacity and capex discipline shape returns",
+          "body": "Stub: note major capex projects and what milestones matter.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital returns are a meaningful investor signal",
+          "body": "Stub: note buyback/dividend stance and any policy evolution.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: demand slowdown, pricing pressure, project execution risk, and adverse mix/FX impacts.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capex / capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "7741",
+    "slug": "7741-hoya",
+    "name_en": "Hoya",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Precision / Healthcare",
+    "tags": [
+      "Healthcare",
+      "Optics",
+      "Semicon"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Segment mix is the main determinant of near-term performance",
+          "body": "Stub: summarize which segments drive earnings and how mix is trending per commentary.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "Margin resilience depends on pricing and cost control",
+          "body": "Stub: highlight management view on pricing, input costs, and operating leverage.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Capital allocation remains a relevant support",
+          "body": "Stub: capture stance on buybacks/dividends and investment priorities.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "KPIs should be tied to what management emphasizes",
+          "body": "Stub: add 1–2 KPIs for monitoring (segment revenue, margin, guidance stance).",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: segment demand weakness, margin pressure, FX impacts, and execution risk on investment priorities.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
+    }
+  },
+  {
+    "ticker": "6594",
+    "slug": "6594-nidec",
+    "name_en": "Nidec",
+    "name_ja": "",
+    "segment": "Prime",
+    "sector": "Motors / Industrial",
+    "tags": [
+      "Industrial",
+      "Motors",
+      "EV"
+    ],
+    "outlook": {
+      "version": "v0",
+      "horizon": "6–12 month fundamental view",
+      "last_reviewed": "2025-12-31",
+      "bullets": [
+        {
+          "n": 1,
+          "claim": "Execution on restructuring and margin recovery is central",
+          "body": "Stub: frame the outlook around margin recovery actions and evidence of execution vs guidance.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 2,
+          "claim": "End-market demand and mix are key sensitivities",
+          "body": "Stub: highlight which end-markets matter and how mix shifts impact profitability.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 3,
+          "claim": "Investment and integration discipline should be tracked",
+          "body": "Stub: note investment posture and any integration milestones discussed by management.",
+          "footnotes": [
+            1,
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "claim": "Capital allocation posture is a secondary monitor",
+          "body": "Stub: capture any stated policy on returns vs reinvestment and what would count as a change.",
+          "footnotes": [
+            1,
+            3
+          ]
+        },
+        {
+          "n": 5,
+          "claim": "Primary risks",
+          "body": "Stub: execution shortfalls, slower demand, margin compression, and delayed benefits from restructuring/integration.",
+          "footnotes": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "footnote_key": {
+        "1": "Company disclosures (TDnet, earnings release, IR materials)",
+        "2": "Earnings presentation / management Q&A",
+        "3": "Capital allocation disclosures"
+      }
     }
   }
-},
-{
-  "ticker": "7735",
-  "slug": "7735-screen-holdings",
-  "name_en": "SCREEN Holdings",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Semiconductor Equipment",
-  "tags": ["Semicap", "WFE", "Cycle"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Orders and backlog are the primary 6–12 month signal", "body": "Stub: frame the investment case around order momentum, backlog conversion, and management guidance posture.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Cyclicality is high; control the narrative via guidance and mix", "body": "Stub: specify which end-markets or tool categories matter most and how mix affects margins.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Capacity and supply-chain execution remain key", "body": "Stub: highlight delivery constraints, lead-times, and any operational bottlenecks mentioned by management.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital returns vs reinvestment should be monitored", "body": "Stub: note capital allocation stance (buybacks/dividends/capex) and how it interacts with the cycle.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: WFE downturn, customer capex cuts, delayed node transitions, execution misses, and FX sensitivity.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "3064",
-  "slug": "3064-monotaro",
-  "name_en": "MonotaRO",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "E-commerce / Distribution",
-  "tags": ["E-commerce", "SMB", "Logistics"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Structural growth story; watch growth vs margin trade-offs", "body": "Stub: focus on demand drivers, customer acquisition/retention, and how logistics/investment choices affect margins.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Operational scalability is the key differentiator", "body": "Stub: highlight fulfillment capacity, delivery performance, and cost per order trends as key KPIs.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Competitive intensity should be tracked through disclosures", "body": "Stub: note if management flags pricing pressure, service-level competition, or category expansion impacts.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital allocation is typically reinvestment-led", "body": "Stub: state the reinvestment vs shareholder return balance and what would count as a change.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: demand slowdown, margin pressure from logistics/investment, competition, and execution risk in capacity expansion.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "6857",
-  "slug": "6857-advantest",
-  "name_en": "Advantest",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Semiconductor Test Equipment",
-  "tags": ["Semicap", "Test", "Cycle"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Cycle exposure is high; orders and guidance are the main anchors", "body": "Stub: tie the outlook to order trends/backlog conversion and the confidence level implied by guidance.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Product mix influences margins materially", "body": "Stub: describe mix sensitivity (high-end vs commoditized testing, customer concentration if noted).", "footnotes": [1,2] },
-      { "n": 3, "claim": "Execution on delivery and service is a key monitorable factor", "body": "Stub: track lead times, capacity constraints, and service revenue stability if disclosed.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital allocation: monitor changes in return posture across the cycle", "body": "Stub: note buyback/dividend posture and what would represent a shift.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: customer capex cuts, test spending deferrals, execution misses, and adverse cycle turn.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "6861",
-  "slug": "6861-keyence",
-  "name_en": "Keyence",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Factory Automation / Sensors",
-  "tags": ["Automation", "FA", "Industrial"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Demand tone across FA end-markets drives near-term momentum", "body": "Stub: summarize management’s view on automation demand and end-market breadth.", "footnotes": [1,2] },
-      { "n": 2, "claim": "High-margin model; watch volume leverage and mix", "body": "Stub: outline what would cause margin expansion/contraction (volume, mix, FX, costs) per disclosures.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Sales execution and product cycle remain key differentiators", "body": "Stub: note product cadence, salesforce productivity signals, and any KPI references.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital allocation is an important investor signal", "body": "Stub: capture buyback/dividend stance and any policy evolution.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: industrial slowdown, capex deferrals, FX sensitivity, and unexpected competitive pressure.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "6098",
-  "slug": "6098-recruit-holdings",
-  "name_en": "Recruit Holdings",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "HR Tech / Services",
-  "tags": ["HR Tech", "Staffing", "Services"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Hiring environment is the main macro sensitivity", "body": "Stub: frame the outlook around hiring demand, client budgets, and management commentary on trends.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Mix across segments drives profitability", "body": "Stub: describe which segments are driving margin and how mix could change.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Investment vs margin discipline is the key trade-off", "body": "Stub: note where investment is being directed and what KPIs matter.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital returns may be an incremental support", "body": "Stub: capture stance on buybacks/dividends and any stated policy framework.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: labor market deterioration, margin pressure, slower platform growth, and execution risk on investment.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "9983",
-  "slug": "9983-fast-retailing",
-  "name_en": "Fast Retailing",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Apparel Retail",
-  "tags": ["Retail", "Brand", "Global"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Sales momentum and gross margin are the core monitors", "body": "Stub: frame the outlook around sales trends, discounting discipline, and regional performance as discussed in disclosures.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Cost inflation and FX are key sensitivities", "body": "Stub: note management commentary on input costs, logistics, and currency impacts.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Inventory discipline is central to confidence", "body": "Stub: highlight inventory posture and any risk of markdowns flagged by management.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital allocation should be monitored for any shift", "body": "Stub: capture any policy on buybacks/dividends and investment priorities.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: demand slowdown, inventory/markdown risk, cost/FX headwinds, and execution risk across regions.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "4063",
-  "slug": "4063-shin-etsu-chemical",
-  "name_en": "Shin-Etsu Chemical",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Chemicals / Materials",
-  "tags": ["Materials", "Semicon", "Chemicals"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "End-market demand signals drive the near-term outlook", "body": "Stub: summarize demand tone across major product lines as conveyed in management commentary.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Pricing and utilization are key margin drivers", "body": "Stub: capture management commentary on pricing discipline, utilization, and cost trends.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Capacity and capex discipline shape returns", "body": "Stub: note major capex projects and what milestones matter.", "footnotes": [1,3] },
-      { "n": 4, "claim": "Capital returns are a meaningful investor signal", "body": "Stub: note buyback/dividend stance and any policy evolution.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: demand slowdown, pricing pressure, project execution risk, and adverse mix/FX impacts.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capex / capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "7741",
-  "slug": "7741-hoya",
-  "name_en": "Hoya",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Precision / Healthcare",
-  "tags": ["Healthcare", "Optics", "Semicon"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Segment mix is the main determinant of near-term performance", "body": "Stub: summarize which segments drive earnings and how mix is trending per commentary.", "footnotes": [1,2] },
-      { "n": 2, "claim": "Margin resilience depends on pricing and cost control", "body": "Stub: highlight management view on pricing, input costs, and operating leverage.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Capital allocation remains a relevant support", "body": "Stub: capture stance on buybacks/dividends and investment priorities.", "footnotes": [1,3] },
-      { "n": 4, "claim": "KPIs should be tied to what management emphasizes", "body": "Stub: add 1–2 KPIs for monitoring (segment revenue, margin, guidance stance).", "footnotes": [1,2] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: segment demand weakness, margin pressure, FX impacts, and execution risk on investment priorities.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-},
-{
-  "ticker": "6594",
-  "slug": "6594-nidec",
-  "name_en": "Nidec",
-  "name_ja": "",
-  "segment": "Prime",
-  "sector": "Motors / Industrial",
-  "tags": ["Industrial", "Motors", "EV"],
-  "outlook": {
-    "version": "v0",
-    "horizon": "6–12 month fundamental view",
-    "last_reviewed": "2025-12-31",
-    "bullets": [
-      { "n": 1, "claim": "Execution on restructuring and margin recovery is central", "body": "Stub: frame the outlook around margin recovery actions and evidence of execution vs guidance.", "footnotes": [1,2] },
-      { "n": 2, "claim": "End-market demand and mix are key sensitivities", "body": "Stub: highlight which end-markets matter and how mix shifts impact profitability.", "footnotes": [1,2] },
-      { "n": 3, "claim": "Investment and integration discipline should be tracked", "body": "Stub: note investment posture and any integration milestones discussed by management.", "footnotes": [1,2] },
-      { "n": 4, "claim": "Capital allocation posture is a secondary monitor", "body": "Stub: capture any stated policy on returns vs reinvestment and what would count as a change.", "footnotes": [1,3] },
-      { "n": 5, "claim": "Primary risks", "body": "Stub: execution shortfalls, slower demand, margin compression, and delayed benefits from restructuring/integration.", "footnotes": [1,2,3] }
-    ],
-    "footnote_key": {
-      "1": "Company disclosures (TDnet, earnings release, IR materials)",
-      "2": "Earnings presentation / management Q&A",
-      "3": "Capital allocation disclosures"
-    }
-  }
-}]
+]
