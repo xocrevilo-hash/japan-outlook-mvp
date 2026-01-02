@@ -1,149 +1,119 @@
-import { allCompanies, findBySlug } from "../../../lib/companies";
-import ViewTracker from "./ViewTracker";
+import Link from "next/link";
+import { findBySlug } from "../../../lib/companies";
 import { getOpsMeta } from "../../../lib/opsMeta";
+import ViewTracker from "./ViewTracker";
 
-export function generateStaticParams() {
-  return allCompanies().map((c: any) => ({ slug: c.slug }));
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-function superscript(n: number) {
-  const map: Record<string, string> = {
-    "0": "⁰",
-    "1": "¹",
-    "2": "²",
-    "3": "³",
-    "4": "⁴",
-    "5": "⁵",
-    "6": "⁶",
-    "7": "⁷",
-    "8": "⁸",
-    "9": "⁹",
-  };
-  return String(n)
-    .split("")
-    .map((d) => map[d] || d)
-    .join("");
-}
-
-function bulletText(b: any): string {
-  if (b == null) return "";
-  if (typeof b === "string") return b;
-  if (typeof b === "number") return String(b);
-
-  if (typeof b === "object") {
-    if (typeof b.body === "string") return b.body;
-    if (typeof b.claim === "string") return b.claim;
-    if (typeof b.text === "string") return b.text;
-  }
-
+function fmtIso(iso?: string) {
+  if (!iso) return "—";
   try {
-    return JSON.stringify(b);
+    const d = new Date(iso);
+    return d.toLocaleString();
   } catch {
-    return String(b);
+    return iso;
   }
 }
 
-function bulletNumber(b: any, fallback: number) {
-  if (b && typeof b === "object" && typeof b.n === "number") return b.n;
-  return fallback;
-}
-
-export default async function CompanyPage({ params }: { params: { slug: string } }) {
+export default async function CompanyPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const c = findBySlug(params.slug);
-  const opsMeta = await getOpsMeta(c?.ticker);
 
   if (!c) {
     return (
-      <main className="container">
-        <p>Not found.</p>
+      <main className="wrap">
+        <h1>Not found</h1>
+        <p className="muted">No company matches that slug.</p>
+        <Link href="/">← Back</Link>
       </main>
     );
   }
 
-  const bullets = Array.isArray(c.outlook?.bullets) ? c.outlook.bullets : [];
-  
-  // Risks: prefer an explicit field if present, otherwise fall back to last bullet
-  const explicitRisks =
-    (c as any).outlook?.primary_risks ??
-    (c as any).outlook?.primaryRisks ??
-    (c as any).outlook?.risks ??
-    null;
+  const opsMeta = await getOpsMeta(c.ticker);
 
-  const risks =
-    explicitRisks != null
-      ? bulletText(explicitRisks)
-      : bullets.length > 0
-      ? bulletText(bullets[bullets.length - 1])
-      : "";
-
-  const footnotes = c.outlook?.footnote_key ?? {};
+  const lastPub = opsMeta?.last_published_iso;
+  const overrideActive = !!opsMeta?.override_active;
 
   return (
-    <main className="container">
-      {/* Step 5: silent page-view tracking */}
-      <ViewTracker slug={c.slug} />
+    <main className="wrap">
+      {/* client-side tracker for trending */}
+      <ViewTracker slug={c.slug} ticker={c.ticker} />
 
-      <h1 style={{ marginBottom: 4 }}>
-        {c.name_en} ({c.ticker})
-      </h1>
+      <div className="topbar" style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+        <div>
+          <h1 style={{ marginBottom: 4 }}>
+            {c.name_en} ({c.ticker})
+          </h1>
+          <div className="muted" style={{ fontSize: 14 }}>
+            {c.segment} · {c.sector}
+            {c.tags?.length ? ` · ${c.tags.slice(0, 3).join(", ")}` : ""}
+          </div>
+        </div>
 
-{opsMeta?.run && (
-  <div
-    style={{
-      marginTop: 6,
-      fontSize: 13,
-      color: "#666",
-    }}
-  >
-    Ops update: run {opsMeta.run}
-    {opsMeta.published_at && (
-      <> · published {new Date(opsMeta.published_at).toLocaleDateString()}</>
-    )}
-  </div>
-)}
+        {/* Ops badge */}
+        <div
+          className="card"
+          style={{
+            minWidth: 280,
+            padding: 12,
+            alignSelf: "flex-start",
+          }}
+        >
+          <div className="muted" style={{ fontSize: 12, letterSpacing: 0.08, textTransform: "uppercase" }}>
+            Ops update
+          </div>
 
-      {c?.outlook?.last_reviewed ? (
-        <p className="muted small" style={{ marginTop: 0 }}>
-          Last reviewed: <b>{c.outlook.last_reviewed}</b>
-          {c?.outlook?.version ? <> · Version: <b>{c.outlook.version}</b></> : null}
-        </p>
-      ) : null}
+          <div style={{ marginTop: 6, fontWeight: 800 }}>
+            {overrideActive ? "KV override active" : "KV override inactive"}
+          </div>
 
-      <section style={{ marginTop: 16 }}>
-        <h2>Outlook</h2>
-        <ul>
-          {bullets.map((b: any, i: number) => {
-            const n = bulletNumber(b, i + 1);
-            return (
-              <li key={i}>
-                {bulletText(b)} <sup>{superscript(n)}</sup>
+          <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>
+            Last published: <span style={{ fontWeight: 650 }}>{fmtIso(lastPub)}</span>
+          </div>
+
+          {opsMeta?.version ? (
+            <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>
+              Version: <span style={{ fontWeight: 650 }}>{opsMeta.version}</span>
+            </div>
+          ) : null}
+
+          <div style={{ marginTop: 10 }}>
+            <Link href="/admin" className="link">
+              Internal Ops →
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Outlook content (existing local JSON) */}
+      <section className="card" style={{ marginTop: 16 }}>
+        <div className="sectionTitle">Outlook</div>
+
+        {Array.isArray(c.outlook?.bullets) && c.outlook.bullets.length > 0 ? (
+          <ol style={{ marginTop: 12, paddingLeft: 18 }}>
+            {c.outlook.bullets.map((b: any) => (
+              <li key={b.n ?? b.claim} style={{ marginBottom: 12 }}>
+                <div style={{ fontWeight: 850 }}>{b.claim}</div>
+                <div className="muted" style={{ marginTop: 4 }}>
+                  {b.body}
+                </div>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ol>
+        ) : (
+          <div className="muted" style={{ marginTop: 12 }}>
+            No outlook bullets yet.
+          </div>
+        )}
       </section>
 
-      <section style={{ marginTop: 18 }}>
-        <h3>Primary Risks</h3>
-        <p>{risks}</p>
-      </section>
-
-      <section style={{ marginTop: 18 }}>
-        <h3>Sources</h3>
-        <ul className="small muted">
-          {Array.isArray(footnotes)
-            ? footnotes.map((v: any, i: number) => (
-                <li key={i}>
-                  {superscript(i + 1)} {bulletText(v)}
-                </li>
-              ))
-            : Object.entries(footnotes).map(([k, v]: any) => (
-                <li key={k}>
-                  {superscript(Number(k))} {bulletText(v)}
-                </li>
-              ))}
-        </ul>
-      </section>
+      <div style={{ marginTop: 18 }}>
+        <Link href="/">← Back to search</Link>
+      </div>
     </main>
   );
 }

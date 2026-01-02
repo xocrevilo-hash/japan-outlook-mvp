@@ -1,65 +1,76 @@
+// lib/pageViews.ts
+export type PageViewsMap = Record<string, number[]>;
+
 const KEY = "page_views_v1";
 
-type Store = Record<string, number[]>; // slug -> timestamps (ms)
-
-function load(): Store {
-  if (typeof window === "undefined") return {};
+function safeParse(raw: string | null): PageViewsMap {
+  if (!raw) return {};
   try {
-    return JSON.parse(window.localStorage.getItem(KEY) || "{}");
+    const obj = JSON.parse(raw);
+    return obj && typeof obj === "object" ? (obj as PageViewsMap) : {};
   } catch {
     return {};
   }
 }
 
-function save(s: Store) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(KEY, JSON.stringify(s));
+function read(): PageViewsMap {
+  if (typeof window === "undefined") return {};
+  return safeParse(window.localStorage.getItem(KEY));
 }
 
-export function trackView(slug: string) {
-  const s = load();
+function write(m: PageViewsMap) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(KEY, JSON.stringify(m));
+}
+
+export function recordView(slug: string) {
+  if (typeof window === "undefined") return;
+  const m = read();
   const now = Date.now();
-  const arr = s[slug] || [];
+  const arr = Array.isArray(m[slug]) ? m[slug] : [];
   arr.push(now);
 
-  // keep last 60 days
-  const cutoff = now - 60 * 24 * 60 * 60 * 1000;
-  s[slug] = arr.filter((t) => t >= cutoff);
+  // keep only last ~90 days to stop it growing forever
+  const cutoff = now - 90 * 24 * 60 * 60 * 1000;
+  m[slug] = arr.filter((t) => typeof t === "number" && t >= cutoff);
 
-  save(s);
+  write(m);
 }
 
-export function counts(slug: string) {
-  const s = load();
+export function getTrending(n = 5): { slug: string; views: number }[] {
+  if (typeof window === "undefined") return [];
+  const m = read();
   const now = Date.now();
-  const arr = s[slug] || [];
-  const d1 = now - 24 * 60 * 60 * 1000;
-  const w1 = now - 7 * 24 * 60 * 60 * 1000;
-  const m1 = now - 30 * 24 * 60 * 60 * 1000;
+  const cutoff = now - 30 * 24 * 60 * 60 * 1000;
 
-  return {
-    d1: arr.filter((t) => t >= d1).length,
-    w1: arr.filter((t) => t >= w1).length,
-    m1: arr.filter((t) => t >= m1).length,
-  };
-}
+  const rows = Object.entries(m).map(([slug, arr]) => {
+    const views = (Array.isArray(arr) ? arr : []).filter((t) => t >= cutoff).length;
+    return { slug, views };
+  });
 
-export function topSlugs(window: "1d" | "1w" | "1m", limit = 10) {
-  const s = load();
-  const now = Date.now();
-  const cutoff =
-    window === "1d"
-      ? now - 24 * 60 * 60 * 1000
-      : window === "1w"
-      ? now - 7 * 24 * 60 * 60 * 1000
-      : now - 30 * 24 * 60 * 60 * 1000;
-
-  return Object.entries(s)
-    .map(([slug, ts]) => ({
-      slug,
-      views: (ts || []).filter((t) => t >= cutoff).length,
-    }))
-    .filter((x) => x.views > 0)
+  return rows
+    .filter((r) => r.views > 0)
     .sort((a, b) => b.views - a.views)
-    .slice(0, limit);
+    .slice(0, n);
+}
+// --- Compatibility export used by app/jp/[slug]/ViewTracker.tsx ---
+export function trackView(slugOrTicker: string) {
+  // If you already have a canonical tracker, call it here instead.
+  // For now, keep it simple + safe for client-side localStorage.
+
+  if (typeof window === "undefined") return;
+
+  const key = "page_views_v1";
+  const now = Date.now();
+
+  try {
+    const raw = window.localStorage.getItem(key);
+    const obj = raw ? (JSON.parse(raw) as Record<string, number[]>) : {};
+    const arr = Array.isArray(obj[slugOrTicker]) ? obj[slugOrTicker] : [];
+    arr.push(now);
+    obj[slugOrTicker] = arr.slice(-50); // cap history per company
+    window.localStorage.setItem(key, JSON.stringify(obj));
+  } catch {
+    // ignore storage errors
+  }
 }
