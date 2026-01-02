@@ -1,5 +1,7 @@
 // data/adminRuns.ts
 // Canonical data + types for Admin Ops weekly runs
+// IMPORTANT: This file must remain backwards-compatible with older run files in data/runs/*
+// so Vercel/Next builds do not break when schema evolves.
 
 export type AdminRunItem = {
   id?: string;
@@ -11,7 +13,7 @@ export type AdminRunItem = {
   sources: string[];
   status: string;
 
-  // Step 2A / 2B classification
+  // Classification (newer runs may include these)
   action_type?: "Bullet" | "Risk" | "NoChange";
   bullet_no?: number;
   current_bullet?: string;
@@ -19,22 +21,42 @@ export type AdminRunItem = {
 };
 
 export type AdminRun = {
+  // Core
   date: string; // YYYY-MM-DD
+
+  // Newer-style metadata
   last_full_scan_jst?: string;
 
-  // legacy summary fields (older run files)
+  // Newer-style summary (preferred going forward)
+  summary?: {
+    flagged?: number;
+    approved_updates?: number;
+    deferred?: number;
+    errors?: number;
+  };
+
+  // Legacy summary fields used by older run files
   companies_monitored?: number;
   flagged_count?: number;
   approved_updates?: number;
   deferred?: number;
   errors?: number;
 
-  summary?: {
-    flagged?: number;
-    approved_updates?: number;
-    errors?: number;
+  // Legacy “health” block used by older run files
+  health?: {
+    last_scan?: string;
+    tdnet?: string;
+    transcripts?: string;
+    news?: string;
+    social?: string;
+    kv?: string;
+    notes?: string;
   };
-  action_required: AdminRunItem[];
+
+  // Action queue (newer runs)
+  action_required?: AdminRunItem[];
+
+  // Completed decisions (newer runs)
   completed?: Array<{
     company: string;
     ticker: string;
@@ -42,11 +64,16 @@ export type AdminRun = {
     notes?: string;
     decided_at_iso?: string;
   }>;
+
+  // Critical MVP escape hatch:
+  // allow legacy/extra fields in historical run files without breaking TypeScript builds
+  [key: string]: any;
 };
 
 /**
  * Alias type used by individual run files under data/runs/*
- * Keep this export to avoid breaking imports.
+ * Keep this export stable to avoid breaking imports like:
+ *   import type { WeeklyRun } from "../adminRuns";
  */
 export type WeeklyRun = AdminRun;
 
@@ -55,7 +82,7 @@ export type WeeklyRun = AdminRun;
  * - /admin
  * - /admin/run/[date]
  *
- * ⚠️ Keep the name ADMIN_RUNS stable.
+ * Keep the name ADMIN_RUNS stable.
  */
 export const ADMIN_RUNS: AdminRun[] = [
   {
@@ -64,6 +91,7 @@ export const ADMIN_RUNS: AdminRun[] = [
     summary: {
       flagged: 3,
       approved_updates: 1,
+      deferred: 0,
       errors: 0,
     },
     action_required: [
